@@ -614,9 +614,17 @@
 
   function checkAge() {
     var guess = parseInt(document.getElementById('quiz-age-input').value);
+    // Try exact match first, then case-insensitive
     var answer = quizAnswers[currentQuizPhoto];
+    if (answer === undefined) {
+      var key = Object.keys(quizAnswers).find(function(k) {
+        return k.toLowerCase() === currentQuizPhoto.toLowerCase();
+      });
+      answer = key !== undefined ? quizAnswers[key] : undefined;
+    }
     var result = document.getElementById('quiz-result');
-    if (isNaN(guess)) { result.textContent = 'Please enter a number!'; return; }
+    if (isNaN(guess)) { result.textContent = 'Please enter a number!'; result.style.color = '#c0504d'; return; }
+    if (answer === undefined) { result.textContent = 'Photo not found in quiz. Ask the organizer!'; result.style.color = '#c0504d'; return; }
     if (guess === answer) {
       result.textContent = '🎉 Yes! Rich was ' + answer + ' years old!';
       result.style.color = '#2d8a2d';
