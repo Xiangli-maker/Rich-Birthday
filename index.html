@@ -598,13 +598,17 @@
     document.getElementById('quiz-photo').src = src;
     document.getElementById('quiz-age-input').value = '';
     document.getElementById('quiz-result').textContent = '';
-    document.getElementById('quiz-result').className = 'quiz-result';
-    document.getElementById('quiz-overlay').classList.add('open');
+    document.getElementById('quiz-result').style.color = '';
+    var overlay = document.getElementById('quiz-overlay');
+    overlay.style.display = 'flex';
+    overlay.style.flexDirection = 'column';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
     setTimeout(function() { document.getElementById('quiz-age-input').focus(); }, 100);
   }
 
   function closeQuiz() {
-    document.getElementById('quiz-overlay').classList.remove('open');
+    document.getElementById('quiz-overlay').style.display = 'none';
     stopFireworks();
   }
 
@@ -859,13 +863,17 @@
     document.getElementById('quiz-photo').src = src;
     document.getElementById('quiz-age-input').value = '';
     document.getElementById('quiz-result').textContent = '';
-    document.getElementById('quiz-result').className = 'quiz-result';
-    document.getElementById('quiz-overlay').classList.add('open');
+    document.getElementById('quiz-result').style.color = '';
+    var overlay = document.getElementById('quiz-overlay');
+    overlay.style.display = 'flex';
+    overlay.style.flexDirection = 'column';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
     setTimeout(function() { document.getElementById('quiz-age-input').focus(); }, 100);
   }
 
   function closeQuiz() {
-    document.getElementById('quiz-overlay').classList.remove('open');
+    document.getElementById('quiz-overlay').style.display = 'none';
     stopFireworks();
   }
 
