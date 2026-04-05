@@ -357,31 +357,30 @@
 </div>
 
 <!-- Photo Gallery -->
+
+
 <div class="gallery-section">
   <div class="gallery-title">🥏 Guess Rich's Age!</div>
   <div id="quiz-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-width:600px;margin:0 auto;"></div>
 </div>
 
-
-
-
-<!-- Photo Age Quiz Modal -->
-<div id="quiz-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:20000;">
-  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:white;border-radius:16px;padding:2rem;width:90%;max-width:400px;text-align:center;">
-    <div style="text-align:right;margin-bottom:8px;">
-      <button id="quiz-close-btn" style="font-size:22px;cursor:pointer;color:#999;background:none;border:none;line-height:1;">✕</button>
+<!-- Quiz Modal -->
+<div id="qoverlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99998;">
+  <div id="qbox" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;padding:24px;width:90%;max-width:400px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+    <div style="text-align:right;margin-bottom:10px;">
+      <button id="qclose" style="font-size:24px;background:none;border:none;cursor:pointer;color:#888;line-height:1;">&#x2715;</button>
     </div>
-    <img id="quiz-photo" src="" alt="" style="width:100%;max-height:240px;object-fit:cover;border-radius:10px;margin-bottom:12px;">
+    <img id="qphoto" src="" style="width:100%;max-height:220px;object-fit:cover;border-radius:10px;margin-bottom:14px;">
     <div style="font-size:20px;font-weight:600;color:#2a2118;margin-bottom:6px;">How old is Rich here?</div>
-    <div style="font-size:13px;color:#a89880;margin-bottom:14px;">Take a guess! 🤔</div>
-    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;">
-      <input type="number" id="quiz-age-input" placeholder="Age" min="0" max="30" style="width:90px;padding:10px;border:1.5px solid #e8ddd0;border-radius:8px;font-size:18px;text-align:center;outline:none;">
-      <button id="quiz-submit-btn" style="padding:10px 20px;background:#a31f34;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-weight:500;">Submit</button>
+    <div style="font-size:13px;color:#a89880;margin-bottom:14px;">Take a guess! &#x1F914;</div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-bottom:14px;">
+      <input id="qinput" type="number" min="0" max="30" placeholder="Age" style="width:90px;padding:10px;font-size:20px;text-align:center;border:2px solid #e8ddd0;border-radius:8px;outline:none;">
+      <button id="qsubmit" style="padding:10px 24px;background:#a31f34;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">Submit</button>
     </div>
-    <div id="quiz-result" style="font-size:15px;font-weight:500;min-height:24px;"></div>
+    <div id="qresult" style="font-size:16px;font-weight:600;min-height:26px;"></div>
   </div>
 </div>
-<canvas id="fireworks-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:25000;display:none;"></canvas>
+<canvas id="fwcanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99999;display:none;"></canvas>
 
 <!-- Lightbox -->
 <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
@@ -584,145 +583,6 @@
     toggleMusic();
   });
 
-
-  // Photo Age Quiz
-  var quizAnswers = {
-    '0.JPG': 0, '1.JPG': 1, '2.JPG': 2, '3.JPG': 3, '4.JPG': 4,
-    '5.JPG': 5, '6.JPG': 6, '7.JPG': 7, '8.jpg': 8, '9.JPG': 9,
-    '10.JPG': 10, '11.JPG': 11, '12.JPG': 12, '13.JPG': 13, '14.jpg': 14,
-    '15.jpg': 15, '16.jpg': 16, '17.jpg': 17, '18.jpg': 18, '19.jpg': 19,
-    '20.jpg': 20
-  };
-  var currentQuizPhoto = '';
-
-  function openPhotoQuiz(src) {
-    currentQuizPhoto = src;
-    document.getElementById('quiz-photo').src = src;
-    document.getElementById('quiz-age-input').value = '';
-    document.getElementById('quiz-result').textContent = '';
-    document.getElementById('quiz-result').style.color = '';
-    document.getElementById('quiz-overlay').style.display = 'block';
-    setTimeout(function() { document.getElementById('quiz-age-input').focus(); }, 200);
-  }
-
-  function closeQuiz() {
-    document.getElementById('quiz-overlay').style.display = 'none';
-    stopFireworks();
-  }
-
-  // Wire up buttons after DOM ready
-  document.getElementById('quiz-submit-btn').addEventListener('click', function(e) {
-    e.stopPropagation();
-    checkAge();
-  });
-  document.getElementById('quiz-close-btn').addEventListener('click', function(e) {
-    e.stopPropagation();
-    closeQuiz();
-  });
-
-  function checkAge() {
-    var guess = parseInt(document.getElementById('quiz-age-input').value);
-    // Try exact match first, then case-insensitive
-    var answer = quizAnswers[currentQuizPhoto];
-    if (answer === undefined) {
-      var key = Object.keys(quizAnswers).find(function(k) {
-        return k.toLowerCase() === currentQuizPhoto.toLowerCase();
-      });
-      answer = key !== undefined ? quizAnswers[key] : undefined;
-    }
-    var result = document.getElementById('quiz-result');
-    if (isNaN(guess)) { result.textContent = 'Please enter a number!'; result.style.color = '#c0504d'; return; }
-    if (answer === undefined) { result.textContent = 'Photo not found in quiz. Ask the organizer!'; result.style.color = '#c0504d'; return; }
-    if (guess === answer) {
-      result.textContent = '🎉 Yes! Rich was ' + answer + ' years old!';
-      result.style.color = '#2d8a2d';
-      launchFireworks();
-    } else if (Math.abs(guess - answer) === 1) {
-      result.textContent = '😅 So close! Try again!';
-      result.style.color = '#c0504d';
-      document.getElementById('quiz-box').style.animation = 'none';
-      void document.getElementById('quiz-box').offsetHeight;
-      document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
-    } else {
-      result.textContent = '❌ Nope! Try again!';
-      result.style.color = '#c0504d';
-      document.getElementById('quiz-box').style.animation = 'none';
-      void document.getElementById('quiz-box').offsetHeight;
-      document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
-    }
-  }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && document.getElementById('quiz-overlay').style.display === 'flex') {
-      checkAge();
-    }
-  });
-
-  // Fireworks
-  var fwCanvas, fwCtx, fwParticles = [], fwRunning = false, fwFrame;
-
-  function launchFireworks() {
-    fwCanvas = document.getElementById('fireworks-canvas');
-    fwCtx = fwCanvas.getContext('2d');
-    fwCanvas.width = window.innerWidth;
-    fwCanvas.height = window.innerHeight;
-    fwCanvas.style.display = 'block';
-    fwParticles = [];
-    fwRunning = true;
-    var colors = ['#a31f34','#FFD700','#ffffff','#2d6a2d','#ff6600','#c8c9c7'];
-    for (var b = 0; b < 8; b++) {
-      (function(delay) {
-        setTimeout(function() {
-          if (!fwRunning) return;
-          var x = Math.random() * fwCanvas.width;
-          var y = Math.random() * fwCanvas.height * 0.5 + 50;
-          for (var i = 0; i < 60; i++) {
-            var angle = (Math.PI * 2 / 60) * i;
-            var speed = Math.random() * 5 + 2;
-            fwParticles.push({
-              x: x, y: y,
-              vx: Math.cos(angle) * speed,
-              vy: Math.sin(angle) * speed,
-              alpha: 1,
-              color: colors[Math.floor(Math.random() * colors.length)],
-              r: Math.random() * 3 + 1.5
-            });
-          }
-        }, delay);
-      })(b * 400);
-    }
-    drawFireworks();
-    setTimeout(stopFireworks, 4500);
-  }
-
-  function drawFireworks() {
-    if (!fwRunning) return;
-    fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
-    fwParticles.forEach(function(p) {
-      p.x += p.vx; p.y += p.vy;
-      p.vy += 0.08; p.vx *= 0.98;
-      p.alpha -= 0.012;
-      if (p.alpha < 0) p.alpha = 0;
-      fwCtx.save();
-      fwCtx.globalAlpha = p.alpha;
-      fwCtx.fillStyle = p.color;
-      fwCtx.beginPath();
-      fwCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      fwCtx.fill();
-      fwCtx.restore();
-    });
-    fwParticles = fwParticles.filter(function(p) { return p.alpha > 0; });
-    fwFrame = requestAnimationFrame(drawFireworks);
-  }
-
-  function stopFireworks() {
-    fwRunning = false;
-    cancelAnimationFrame(fwFrame);
-    if (fwCanvas) {
-      fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
-      fwCanvas.style.display = 'none';
-    }
-  }
 
   function toggleMusic() {
     if (playing) { music.pause(); musicBtn.textContent = '🎵'; }
@@ -966,37 +826,141 @@
   })();
 </script>
 
-<script>
-  // All photos with their filenames
-  var allPhotos = [
-    {file:'0.JPG'}, {file:'1.JPG'}, {file:'2.JPG'}, {file:'3.JPG'},
-    {file:'4.JPG'}, {file:'5.JPG'}, {file:'6.JPG'}, {file:'7.JPG'},
-    {file:'8.jpg'}, {file:'9.JPG'}, {file:'10.JPG'}, {file:'11.JPG'},
-    {file:'12.JPG'}, {file:'13.JPG'}, {file:'14.jpg'}, {file:'15.jpg'},
-    {file:'16.jpg'}, {file:'17.jpg'}, {file:'18.jpg'}, {file:'19.jpg'},
-    {file:'20.jpg'}
-  ];
 
-  // Shuffle array
-  function shuffle(arr) {
-    for (var i = arr.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-    }
-    return arr;
+<script>
+(function() {
+  var answers = {
+    '0.JPG':0,'1.JPG':1,'2.JPG':2,'3.JPG':3,'4.JPG':4,
+    '5.JPG':5,'6.JPG':6,'7.JPG':7,'8.jpg':8,'9.JPG':9,
+    '10.JPG':10,'11.JPG':11,'12.JPG':12,'13.JPG':13,'14.jpg':14,
+    '15.jpg':15,'16.jpg':16,'17.jpg':17,'18.jpg':18,'19.jpg':19,
+    '20.jpg':20
+  };
+
+  var photos = Object.keys(answers);
+  // Shuffle
+  for (var i = photos.length-1; i>0; i--) {
+    var j = Math.floor(Math.random()*(i+1));
+    var t = photos[i]; photos[i]=photos[j]; photos[j]=t;
   }
 
-  // Build the grid
-  var shuffled = shuffle(allPhotos.slice());
+  // Build grid
   var grid = document.getElementById('quiz-grid');
-  shuffled.forEach(function(p, idx) {
-    var div = document.createElement('div');
-    div.className = 'photo-btn';
-    div.style.textAlign = 'center';
-    div.textContent = '📷 Photo ' + (idx + 1);
-    div.onclick = function() { openPhotoQuiz(p.file); };
-    grid.appendChild(div);
+  photos.forEach(function(file, idx) {
+    var btn = document.createElement('div');
+    btn.className = 'photo-btn';
+    btn.style.textAlign = 'center';
+    btn.textContent = '📷 Photo ' + (idx+1);
+    btn.addEventListener('click', function() { openQ(file); });
+    grid.appendChild(btn);
   });
+
+  var current = '';
+
+  function openQ(file) {
+    current = file;
+    document.getElementById('qphoto').src = file;
+    document.getElementById('qinput').value = '';
+    document.getElementById('qresult').textContent = '';
+    document.getElementById('qresult').style.color = '';
+    document.getElementById('qoverlay').style.display = 'block';
+    setTimeout(function(){ document.getElementById('qinput').focus(); }, 200);
+  }
+
+  function closeQ() {
+    document.getElementById('qoverlay').style.display = 'none';
+    stopFW();
+  }
+
+  function submitGuess() {
+    var guess = parseInt(document.getElementById('qinput').value);
+    var res = document.getElementById('qresult');
+    if (isNaN(guess)) { res.style.color='#c0504d'; res.textContent='Please enter a number!'; return; }
+    // Find answer case-insensitive
+    var answer;
+    Object.keys(answers).forEach(function(k) {
+      if (k.toLowerCase() === current.toLowerCase()) answer = answers[k];
+    });
+    if (answer === undefined) { res.style.color='#c0504d'; res.textContent='Photo not found!'; return; }
+    if (guess === answer) {
+      res.style.color = '#2d8a2d';
+      res.textContent = '🎉 Yes! Rich was ' + answer + ' years old!';
+      startFW();
+    } else if (Math.abs(guess - answer) === 1) {
+      res.style.color = '#e67e22';
+      res.textContent = '😅 So close! Try again!';
+      shakeBox();
+    } else {
+      res.style.color = '#c0504d';
+      res.textContent = '❌ Nope! Try again!';
+      shakeBox();
+    }
+  }
+
+  function shakeBox() {
+    var box = document.getElementById('qbox');
+    box.style.transition = 'transform 0.1s';
+    var moves = ['-8px','8px','-6px','6px','0px'];
+    var i = 0;
+    var iv = setInterval(function() {
+      box.style.transform = 'translate(calc(-50% + '+moves[i]+')', '-50%)';
+      i++;
+      if (i >= moves.length) { clearInterval(iv); box.style.transform = 'translate(-50%,-50%)'; }
+    }, 80);
+  }
+
+  // Wire buttons
+  document.getElementById('qsubmit').addEventListener('click', function(e) { e.stopPropagation(); submitGuess(); });
+  document.getElementById('qclose').addEventListener('click', function(e) { e.stopPropagation(); closeQ(); });
+  document.getElementById('qinput').addEventListener('keydown', function(e) { if (e.key==='Enter') { e.stopPropagation(); submitGuess(); } });
+  document.getElementById('qoverlay').addEventListener('click', function(e) { if (e.target===this) closeQ(); });
+
+  // Fireworks
+  var fwRunning = false, fwFrame, fwPieces = [];
+  function startFW() {
+    var canvas = document.getElementById('fwcanvas');
+    var ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.display = 'block';
+    fwPieces = []; fwRunning = true;
+    var colors = ['#a31f34','#FFD700','#fff','#2d6a2d','#c8c9c7','#ff6600'];
+    for (var b=0; b<8; b++) {
+      (function(delay) {
+        setTimeout(function() {
+          if (!fwRunning) return;
+          var x = Math.random()*canvas.width, y = Math.random()*canvas.height*0.5+50;
+          for (var i=0; i<60; i++) {
+            var angle = (Math.PI*2/60)*i, speed = Math.random()*5+2;
+            fwPieces.push({ x:x, y:y, vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed, alpha:1, r:Math.random()*3+1.5, color:colors[Math.floor(Math.random()*colors.length)] });
+          }
+        }, delay);
+      })(b*400);
+    }
+    drawFW(ctx, canvas);
+    setTimeout(stopFW, 4500);
+  }
+  function drawFW(ctx, canvas) {
+    if (!fwRunning) return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    fwPieces.forEach(function(p) {
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.08; p.vx*=0.98; p.alpha-=0.012;
+      if (p.alpha<0) p.alpha=0;
+      ctx.save(); ctx.globalAlpha=p.alpha; ctx.fillStyle=p.color;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    });
+    fwPieces = fwPieces.filter(function(p){ return p.alpha>0; });
+    fwFrame = requestAnimationFrame(function(){ drawFW(ctx, canvas); });
+  }
+  function stopFW() {
+    fwRunning = false;
+    cancelAnimationFrame(fwFrame);
+    var canvas = document.getElementById('fwcanvas');
+    canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+    canvas.style.display = 'none';
+  }
+})();
 </script>
 </body>
 </html>
