@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday!</title>
+  <title>Happy 21st Birthday, Rich!</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <style>
     :root {
-      --cream: #faf7f2;
-      --warm-white: #fff9f4;
-      --gold: #c9a96e;
-      --gold-light: #e8d5b0;
-      --text-dark: #2a2118;
-      --text-mid: #6b5c4a;
-      --text-light: #a89880;
-      --border: #e8ddd0;
+      --cream: #f4f9f4;
+      --warm-white: #f0f7f0;
+      --gold: #e07b20;
+      --gold-light: #f5c98a;
+      --text-dark: #1a2e1a;
+      --text-mid: #3d5c3d;
+      --text-light: #7a9e7a;
+      --border: #c8e0c8;
       --card-bg: #ffffff;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,8 +39,8 @@
     .star-btn { font-size: 26px; cursor: pointer; background: none; border: none; padding: 2px; opacity: 0.2; transition: opacity 0.15s, transform 0.15s; line-height: 1; }
     .star-btn.on { opacity: 1; }
     .star-btn:hover { transform: scale(1.15); }
-    .submit-btn { width: 100%; padding: 12px; background: var(--text-dark); color: #fff; border: none; border-radius: 8px; font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; letter-spacing: 0.04em; transition: background 0.2s, transform 0.1s; }
-    .submit-btn:hover { background: #3d2e1e; }
+    .submit-btn { width: 100%; padding: 12px; background: #e07b20; color: #fff; border: none; border-radius: 8px; font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; letter-spacing: 0.04em; transition: background 0.2s, transform 0.1s; }
+    .submit-btn:hover { background: #2ea043; }
     .submit-btn:active { transform: scale(0.98); }
     .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .form-status { text-align: center; font-size: 13px; min-height: 20px; margin-top: 10px; color: #6a9e6a; }
@@ -51,7 +51,7 @@
     .wish-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 12px; animation: fadeUp 0.35s ease both; }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .wish-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-    .wish-name { font-weight: 500; font-size: 15px; color: var(--gold); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+    .wish-name { font-weight: 500; font-size: 15px; color: #e07b20; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
     .wish-name:hover { color: var(--text-dark); }
     .wish-stars { font-size: 13px; letter-spacing: 1px; }
     .wish-text { font-size: 14px; color: var(--text-mid); line-height: 1.6; display: none; }
@@ -74,8 +74,8 @@
     .lightbox-overlay img { max-width: 90vw; max-height: 90vh; border-radius: 10px; box-shadow: 0 8px 40px rgba(0,0,0,0.6); cursor: default; }
     .lightbox-close { position: fixed; top: 18px; right: 24px; color: white; font-size: 32px; cursor: pointer; line-height: 1; opacity: 0.8; }
     .lightbox-close:hover { opacity: 1; }
-    .music-btn { position: fixed; bottom: 24px; right: 24px; width: 48px; height: 48px; border-radius: 50%; background: #c0392b; color: white; border: none; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1000; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background 0.2s; }
-    .music-btn:hover { transform: scale(1.1); background: #e74c3c; }
+    .music-btn { position: fixed; bottom: 24px; right: 24px; width: 48px; height: 48px; border-radius: 50%; background: #e07b20; color: white; border: none; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1000; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background 0.2s; }
+    .music-btn:hover { transform: scale(1.1); background: #2ea043; }
     .music-label { position: fixed; bottom: 28px; right: 80px; background: rgba(0,0,0,0.7); color: white; font-size: 12px; padding: 5px 10px; border-radius: 20px; z-index: 1000; font-family: 'Jost', sans-serif; white-space: nowrap; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     .music-label.show { opacity: 1; }
     @keyframes sway { 0%, 100% { transform: rotate(-4deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-4px); } }
@@ -96,7 +96,7 @@
     messagingSenderId: "52519306440",
     appId:             "1:52519306440:web:0415d22f3a5ac5b94951fd"
   };
-  var BIRTHDAY_PERSON = "Dad";
+  var BIRTHDAY_PERSON = "Rich";
 </script>
 
 <div id="confetti-wrap"></div>
@@ -136,12 +136,13 @@
       <ellipse cx="22" cy="28" rx="16" ry="22" fill="#9b59b6"/><ellipse cx="16" cy="20" rx="4" ry="5" fill="rgba(255,255,255,0.28)"/><polygon points="22,50 19,54 25,54" fill="#9b59b6"/><path d="M22 54 Q18 62 22 70 Q26 78 22 86" stroke="#8e44ad" stroke-width="1.4" fill="none"/>
     </svg>
   </div>
-  <div class="header-name" style="font-family:'Great Vibes',cursive;font-size:clamp(52px,9vw,96px);font-weight:400;color:#c0392b;letter-spacing:0.02em;text-transform:none;">Happy Birthday! <span id="header-name-em" style="color:#e74c3c;">Dad</span></div>
+  <div style="font-size:13px;color:#7a9e7a;letter-spacing:0.1em;margin-bottom:10px;">🦫 Go Beavers! &nbsp;•&nbsp; 🥏 Ultimate Frisbee &nbsp;•&nbsp; 🎉 Turning 21</div>
+  <div class="header-name" style="font-family:'Great Vibes',cursive;font-size:clamp(52px,9vw,96px);font-weight:400;color:#e07b20;letter-spacing:0.02em;text-transform:none;">Happy 21st Birthday! <span id="header-name-em" style="color:#2ea043;">Rich</span></div>
 </div>
 
 <!-- Photo Gallery -->
 <div class="gallery-section">
-  <div class="gallery-title">📸 Photos</div>
+  <div class="gallery-title">🦫 Photos & Memories</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:400px;margin:0 auto;">
     <div style="display:flex;flex-direction:column;gap:8px;">
       <div onclick="openLightbox('0.JPG','Photo 0')" class="photo-btn">📷 Photo 0</div>
@@ -176,7 +177,7 @@
   <div class="main">
     <div class="config-banner" id="config-banner" style="display:none">⚠️ <strong>Firebase not configured yet.</strong></div>
     <div class="form-card">
-      <div class="card-title">Leave a wish 🎂</div>
+      <div class="card-title">Leave a wish for Rich 🥏</div>
       <div class="field">
         <label>Your name</label>
         <input type="text" id="uname" placeholder="">
@@ -429,7 +430,7 @@
     function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
     resize();
     window.addEventListener('resize', resize);
-    var colors = ['#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6','#e91e8c','#ff6b9d'];
+    var colors = ['#e07b20','#2ea043','#f5a623','#27ae60','#ff8c00','#4caf50','#ffa500','#006400'];
     var dots = Array.from({length: 35}, function() {
       return { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight, r: Math.random() * 5 + 3, color: colors[Math.floor(Math.random() * colors.length)], vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, opacity: Math.random() * 0.4 + 0.1, shape: Math.random() > 0.5 ? 'circle' : 'rect', rot: Math.random() * Math.PI * 2, vr: (Math.random() - 0.5) * 0.02 };
     });
