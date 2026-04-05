@@ -295,9 +295,10 @@
   <!-- Layer 3 - navy blue -->
   <rect x="24" y="124" width="112" height="36" rx="7" fill="#8A8B8C"/>
   <rect x="24" y="124" width="112" height="9" rx="4" fill="#6b6c6d"/>
-  <text x="80" y="140" text-anchor="middle" font-family="Dancing Script,Brush Script MT,cursive" font-size="14" font-weight="700" fill="#cc0000">Happy Birthday</text>
-  <text x="80" y="156" text-anchor="middle" font-family="Dancing Script,Brush Script MT,cursive" font-size="16" font-weight="700" fill="#cc0000">Rich!</text>
-  <path d="M24 132 Q38 140 52 132 Q66 140 80 132 Q94 140 108 132 Q122 140 136 132" stroke="white" stroke-width="2" fill="none" opacity="0.5"/>
+  <!-- drip line drawn first so text appears on top -->
+  <path d="M24 132 Q38 138 52 132 Q66 138 80 132 Q94 138 108 132 Q122 138 136 132" stroke="white" stroke-width="2" fill="none" opacity="0.4"/>
+  <text x="80" y="141" text-anchor="middle" font-family="Dancing Script,Brush Script MT,cursive" font-size="14" font-weight="700" fill="#cc0000" stroke="#cc0000" stroke-width="0.5" paint-order="stroke">Happy Birthday</text>
+  <text x="80" y="157" text-anchor="middle" font-family="Dancing Script,Brush Script MT,cursive" font-size="17" font-weight="700" fill="#cc0000" stroke="#cc0000" stroke-width="0.8" paint-order="stroke">Rich!</text>
 
 
 
