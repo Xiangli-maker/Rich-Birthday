@@ -362,40 +362,24 @@
   <div id="quiz-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-width:600px;margin:0 auto;"></div>
 </div>
 
-<script>
-  // All photos with their filenames
-  var allPhotos = [
-    {file:'0.JPG'}, {file:'1.JPG'}, {file:'2.JPG'}, {file:'3.JPG'},
-    {file:'4.JPG'}, {file:'5.JPG'}, {file:'6.JPG'}, {file:'7.JPG'},
-    {file:'8.jpg'}, {file:'9.JPG'}, {file:'10.JPG'}, {file:'11.JPG'},
-    {file:'12.JPG'}, {file:'13.JPG'}, {file:'14.jpg'}, {file:'15.jpg'},
-    {file:'16.jpg'}, {file:'17.jpg'}, {file:'18.jpg'}, {file:'19.jpg'},
-    {file:'20.jpg'}
-  ];
-
-  // Shuffle array
-  function shuffle(arr) {
-    for (var i = arr.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-    }
-    return arr;
-  }
-
-  // Build the grid
-  var shuffled = shuffle(allPhotos.slice());
-  var grid = document.getElementById('quiz-grid');
-  shuffled.forEach(function(p, idx) {
-    var div = document.createElement('div');
-    div.className = 'photo-btn';
-    div.style.textAlign = 'center';
-    div.textContent = '📷 Photo ' + (idx + 1);
-    div.onclick = function() { openPhotoQuiz(p.file); };
-    grid.appendChild(div);
-  });
-</script>
 
 
+
+<!-- Photo Age Quiz Modal -->
+<div id="quiz-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:20000;align-items:center;justify-content:center;flex-direction:column;">
+  <div id="quiz-box" style="background:white;border-radius:16px;padding:2rem;max-width:420px;width:90%;text-align:center;position:relative;">
+    <button onclick="closeQuiz()" style="position:absolute;top:12px;right:18px;font-size:24px;cursor:pointer;color:#999;background:none;border:none;">✕</button>
+    <img id="quiz-photo" src="" alt="" style="width:100%;max-height:260px;object-fit:cover;border-radius:10px;margin-bottom:1rem;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#2a2118;margin-bottom:0.5rem;">How old is Rich here?</div>
+    <div style="font-size:13px;color:#a89880;margin-bottom:1rem;">Take a guess! 🤔</div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:1rem;">
+      <input type="number" id="quiz-age-input" placeholder="Age" min="0" max="30" style="width:100px;padding:10px;border:1.5px solid #e8ddd0;border-radius:8px;font-size:18px;text-align:center;font-family:'Jost',sans-serif;outline:none;">
+      <button onclick="checkAge()" style="padding:10px 20px;background:#a31f34;color:white;border:none;border-radius:8px;font-size:15px;font-family:'Jost',sans-serif;cursor:pointer;font-weight:500;">Submit</button>
+    </div>
+    <div id="quiz-result" style="font-size:15px;font-weight:500;min-height:24px;margin-bottom:0.5rem;"></div>
+  </div>
+</div>
+<canvas id="fireworks-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:25000;display:none;"></canvas>
 
 <!-- Lightbox -->
 <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
@@ -1015,6 +999,39 @@
     }
     draw();
   })();
+</script>
+
+<script>
+  // All photos with their filenames
+  var allPhotos = [
+    {file:'0.JPG'}, {file:'1.JPG'}, {file:'2.JPG'}, {file:'3.JPG'},
+    {file:'4.JPG'}, {file:'5.JPG'}, {file:'6.JPG'}, {file:'7.JPG'},
+    {file:'8.jpg'}, {file:'9.JPG'}, {file:'10.JPG'}, {file:'11.JPG'},
+    {file:'12.JPG'}, {file:'13.JPG'}, {file:'14.jpg'}, {file:'15.jpg'},
+    {file:'16.jpg'}, {file:'17.jpg'}, {file:'18.jpg'}, {file:'19.jpg'},
+    {file:'20.jpg'}
+  ];
+
+  // Shuffle array
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  // Build the grid
+  var shuffled = shuffle(allPhotos.slice());
+  var grid = document.getElementById('quiz-grid');
+  shuffled.forEach(function(p, idx) {
+    var div = document.createElement('div');
+    div.className = 'photo-btn';
+    div.style.textAlign = 'center';
+    div.textContent = '📷 Photo ' + (idx + 1);
+    div.onclick = function() { openPhotoQuiz(p.file); };
+    grid.appendChild(div);
+  });
 </script>
 </body>
 </html>
