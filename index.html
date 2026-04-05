@@ -848,65 +848,6 @@
   })();
 
   
-  // Photo Age Quiz
-  var quizAnswers = {
-    '0.JPG': 0, '1.JPG': 1, '2.JPG': 2, '3.JPG': 3, '4.JPG': 4,
-    '5.JPG': 5, '6.JPG': 6, '7.JPG': 7, '8.jpg': 8, '9.JPG': 9,
-    '10.JPG': 10, '11.JPG': 11, '12.JPG': 12, '13.JPG': 13, '14.jpg': 14,
-    '15.jpg': 15, '16.jpg': 16, '17.jpg': 17, '18.jpg': 18, '19.jpg': 19,
-    '20.jpg': 20
-  };
-  var currentQuizPhoto = '';
-
-  function openPhotoQuiz(src) {
-    currentQuizPhoto = src;
-    document.getElementById('quiz-photo').src = src;
-    document.getElementById('quiz-age-input').value = '';
-    document.getElementById('quiz-result').textContent = '';
-    document.getElementById('quiz-result').style.color = '';
-    var overlay = document.getElementById('quiz-overlay');
-    overlay.style.display = 'flex';
-    overlay.style.flexDirection = 'column';
-    overlay.style.alignItems = 'center';
-    overlay.style.justifyContent = 'center';
-    setTimeout(function() { document.getElementById('quiz-age-input').focus(); }, 100);
-  }
-
-  function closeQuiz() {
-    document.getElementById('quiz-overlay').style.display = 'none';
-    stopFireworks();
-  }
-
-  function checkAge() {
-    var guess = parseInt(document.getElementById('quiz-age-input').value);
-    var answer = quizAnswers[currentQuizPhoto];
-    var result = document.getElementById('quiz-result');
-    if (isNaN(guess)) { result.textContent = 'Please enter a number!'; return; }
-    if (guess === answer) {
-      result.textContent = '🎉 Yes! Rich was ' + answer + ' years old!';
-      result.style.color = '#2d8a2d';
-      launchFireworks();
-    } else if (Math.abs(guess - answer) === 1) {
-      result.textContent = '😅 So close! Try again!';
-      result.style.color = '#c0504d';
-      document.getElementById('quiz-box').style.animation = 'none';
-      void document.getElementById('quiz-box').offsetHeight;
-      document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
-    } else {
-      result.textContent = '❌ Nope! Try again!';
-      result.style.color = '#c0504d';
-      document.getElementById('quiz-box').style.animation = 'none';
-      void document.getElementById('quiz-box').offsetHeight;
-      document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
-    }
-  }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && document.getElementById('quiz-overlay').style.display === 'flex') {
-      checkAge();
-    }
-  });
-
   // Fireworks
   var fwCanvas, fwCtx, fwParticles = [], fwRunning = false, fwFrame;
 
