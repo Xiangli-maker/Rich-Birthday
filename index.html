@@ -619,17 +619,17 @@
     if (isNaN(guess)) { result.textContent = 'Please enter a number!'; return; }
     if (guess === answer) {
       result.textContent = '🎉 Yes! Rich was ' + answer + ' years old!';
-      result.className = 'quiz-result correct';
+      result.style.color = '#2d8a2d';
       launchFireworks();
     } else if (Math.abs(guess - answer) === 1) {
       result.textContent = '😅 So close! Try again!';
-      result.className = 'quiz-result wrong';
+      result.style.color = '#c0504d';
       document.getElementById('quiz-box').style.animation = 'none';
       void document.getElementById('quiz-box').offsetHeight;
       document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
     } else {
       result.textContent = '❌ Nope! Try again!';
-      result.className = 'quiz-result wrong';
+      result.style.color = '#c0504d';
       document.getElementById('quiz-box').style.animation = 'none';
       void document.getElementById('quiz-box').offsetHeight;
       document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
@@ -637,7 +637,7 @@
   }
 
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && document.getElementById('quiz-overlay').classList.contains('open')) {
+    if (e.key === 'Enter' && document.getElementById('quiz-overlay').style.display === 'flex') {
       checkAge();
     }
   });
@@ -884,17 +884,17 @@
     if (isNaN(guess)) { result.textContent = 'Please enter a number!'; return; }
     if (guess === answer) {
       result.textContent = '🎉 Yes! Rich was ' + answer + ' years old!';
-      result.className = 'quiz-result correct';
+      result.style.color = '#2d8a2d';
       launchFireworks();
     } else if (Math.abs(guess - answer) === 1) {
       result.textContent = '😅 So close! Try again!';
-      result.className = 'quiz-result wrong';
+      result.style.color = '#c0504d';
       document.getElementById('quiz-box').style.animation = 'none';
       void document.getElementById('quiz-box').offsetHeight;
       document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
     } else {
       result.textContent = '❌ Nope! Try again!';
-      result.className = 'quiz-result wrong';
+      result.style.color = '#c0504d';
       document.getElementById('quiz-box').style.animation = 'none';
       void document.getElementById('quiz-box').offsetHeight;
       document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
@@ -902,7 +902,7 @@
   }
 
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && document.getElementById('quiz-overlay').classList.contains('open')) {
+    if (e.key === 'Enter' && document.getElementById('quiz-overlay').style.display === 'flex') {
       checkAge();
     }
   });
