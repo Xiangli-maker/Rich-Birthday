@@ -317,7 +317,7 @@
   <div class="gallery-title">📸 Photos</div>
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-width:600px;margin:0 auto;">
     <div style="display:flex;flex-direction:column;gap:8px;">
-      <div onclick="openPhotoQuiz('0.JPG', 0)" class="photo-btn">📷 Guess the Age!</div>
+      <div onclick="openPhotoQuiz('0.JPG')" class="photo-btn">📷 Guess the Age!</div>
       <div onclick="openLightbox('1.JPG','Photo 1')" class="photo-btn">📷 Photo 1</div>
       <div onclick="openLightbox('2.JPG','Photo 2')" class="photo-btn">📷 Photo 2</div>
       <div onclick="openLightbox('3.JPG','Photo 3')" class="photo-btn">📷 Photo 3</div>
@@ -606,6 +606,122 @@
     toggleMusic();
   });
 
+
+  // Photo Age Quiz
+  var quizAnswers = { '0.JPG': 1 };
+  var currentQuizPhoto = '';
+
+  function openPhotoQuiz(src) {
+    currentQuizPhoto = src;
+    document.getElementById('quiz-photo').src = src;
+    document.getElementById('quiz-age-input').value = '';
+    document.getElementById('quiz-result').textContent = '';
+    document.getElementById('quiz-result').className = 'quiz-result';
+    document.getElementById('quiz-overlay').classList.add('open');
+    setTimeout(function() { document.getElementById('quiz-age-input').focus(); }, 100);
+  }
+
+  function closeQuiz() {
+    document.getElementById('quiz-overlay').classList.remove('open');
+    stopFireworks();
+  }
+
+  function checkAge() {
+    var guess = parseInt(document.getElementById('quiz-age-input').value);
+    var answer = quizAnswers[currentQuizPhoto];
+    var result = document.getElementById('quiz-result');
+    if (isNaN(guess)) { result.textContent = 'Please enter a number!'; return; }
+    if (guess === answer) {
+      result.textContent = '🎉 Yes! Rich was ' + answer + ' years old!';
+      result.className = 'quiz-result correct';
+      launchFireworks();
+    } else if (Math.abs(guess - answer) === 1) {
+      result.textContent = '😅 So close! Try again!';
+      result.className = 'quiz-result wrong';
+      document.getElementById('quiz-box').style.animation = 'none';
+      void document.getElementById('quiz-box').offsetHeight;
+      document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
+    } else {
+      result.textContent = '❌ Nope! Try again!';
+      result.className = 'quiz-result wrong';
+      document.getElementById('quiz-box').style.animation = 'none';
+      void document.getElementById('quiz-box').offsetHeight;
+      document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('quiz-overlay').classList.contains('open')) {
+      checkAge();
+    }
+  });
+
+  // Fireworks
+  var fwCanvas, fwCtx, fwParticles = [], fwRunning = false, fwFrame;
+
+  function launchFireworks() {
+    fwCanvas = document.getElementById('fireworks-canvas');
+    fwCtx = fwCanvas.getContext('2d');
+    fwCanvas.width = window.innerWidth;
+    fwCanvas.height = window.innerHeight;
+    fwCanvas.style.display = 'block';
+    fwParticles = [];
+    fwRunning = true;
+    var colors = ['#a31f34','#FFD700','#ffffff','#2d6a2d','#ff6600','#c8c9c7'];
+    for (var b = 0; b < 8; b++) {
+      (function(delay) {
+        setTimeout(function() {
+          if (!fwRunning) return;
+          var x = Math.random() * fwCanvas.width;
+          var y = Math.random() * fwCanvas.height * 0.5 + 50;
+          for (var i = 0; i < 60; i++) {
+            var angle = (Math.PI * 2 / 60) * i;
+            var speed = Math.random() * 5 + 2;
+            fwParticles.push({
+              x: x, y: y,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed,
+              alpha: 1,
+              color: colors[Math.floor(Math.random() * colors.length)],
+              r: Math.random() * 3 + 1.5
+            });
+          }
+        }, delay);
+      })(b * 400);
+    }
+    drawFireworks();
+    setTimeout(stopFireworks, 4500);
+  }
+
+  function drawFireworks() {
+    if (!fwRunning) return;
+    fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+    fwParticles.forEach(function(p) {
+      p.x += p.vx; p.y += p.vy;
+      p.vy += 0.08; p.vx *= 0.98;
+      p.alpha -= 0.012;
+      if (p.alpha < 0) p.alpha = 0;
+      fwCtx.save();
+      fwCtx.globalAlpha = p.alpha;
+      fwCtx.fillStyle = p.color;
+      fwCtx.beginPath();
+      fwCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      fwCtx.fill();
+      fwCtx.restore();
+    });
+    fwParticles = fwParticles.filter(function(p) { return p.alpha > 0; });
+    fwFrame = requestAnimationFrame(drawFireworks);
+  }
+
+  function stopFireworks() {
+    fwRunning = false;
+    cancelAnimationFrame(fwFrame);
+    if (fwCanvas) {
+      fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+      fwCanvas.style.display = 'none';
+    }
+  }
+
   function toggleMusic() {
     if (playing) { music.pause(); musicBtn.textContent = '🎵'; }
     else { music.muted = false; music.play(); musicBtn.textContent = '⏸'; }
@@ -713,7 +829,123 @@
     draw();
   })();
 
-    function toggleMusic() {
+  
+  // Photo Age Quiz
+  var quizAnswers = { '0.JPG': 1 };
+  var currentQuizPhoto = '';
+
+  function openPhotoQuiz(src) {
+    currentQuizPhoto = src;
+    document.getElementById('quiz-photo').src = src;
+    document.getElementById('quiz-age-input').value = '';
+    document.getElementById('quiz-result').textContent = '';
+    document.getElementById('quiz-result').className = 'quiz-result';
+    document.getElementById('quiz-overlay').classList.add('open');
+    setTimeout(function() { document.getElementById('quiz-age-input').focus(); }, 100);
+  }
+
+  function closeQuiz() {
+    document.getElementById('quiz-overlay').classList.remove('open');
+    stopFireworks();
+  }
+
+  function checkAge() {
+    var guess = parseInt(document.getElementById('quiz-age-input').value);
+    var answer = quizAnswers[currentQuizPhoto];
+    var result = document.getElementById('quiz-result');
+    if (isNaN(guess)) { result.textContent = 'Please enter a number!'; return; }
+    if (guess === answer) {
+      result.textContent = '🎉 Yes! Rich was ' + answer + ' years old!';
+      result.className = 'quiz-result correct';
+      launchFireworks();
+    } else if (Math.abs(guess - answer) === 1) {
+      result.textContent = '😅 So close! Try again!';
+      result.className = 'quiz-result wrong';
+      document.getElementById('quiz-box').style.animation = 'none';
+      void document.getElementById('quiz-box').offsetHeight;
+      document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
+    } else {
+      result.textContent = '❌ Nope! Try again!';
+      result.className = 'quiz-result wrong';
+      document.getElementById('quiz-box').style.animation = 'none';
+      void document.getElementById('quiz-box').offsetHeight;
+      document.getElementById('quiz-box').style.animation = 'shake 0.4s ease';
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('quiz-overlay').classList.contains('open')) {
+      checkAge();
+    }
+  });
+
+  // Fireworks
+  var fwCanvas, fwCtx, fwParticles = [], fwRunning = false, fwFrame;
+
+  function launchFireworks() {
+    fwCanvas = document.getElementById('fireworks-canvas');
+    fwCtx = fwCanvas.getContext('2d');
+    fwCanvas.width = window.innerWidth;
+    fwCanvas.height = window.innerHeight;
+    fwCanvas.style.display = 'block';
+    fwParticles = [];
+    fwRunning = true;
+    var colors = ['#a31f34','#FFD700','#ffffff','#2d6a2d','#ff6600','#c8c9c7'];
+    for (var b = 0; b < 8; b++) {
+      (function(delay) {
+        setTimeout(function() {
+          if (!fwRunning) return;
+          var x = Math.random() * fwCanvas.width;
+          var y = Math.random() * fwCanvas.height * 0.5 + 50;
+          for (var i = 0; i < 60; i++) {
+            var angle = (Math.PI * 2 / 60) * i;
+            var speed = Math.random() * 5 + 2;
+            fwParticles.push({
+              x: x, y: y,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed,
+              alpha: 1,
+              color: colors[Math.floor(Math.random() * colors.length)],
+              r: Math.random() * 3 + 1.5
+            });
+          }
+        }, delay);
+      })(b * 400);
+    }
+    drawFireworks();
+    setTimeout(stopFireworks, 4500);
+  }
+
+  function drawFireworks() {
+    if (!fwRunning) return;
+    fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+    fwParticles.forEach(function(p) {
+      p.x += p.vx; p.y += p.vy;
+      p.vy += 0.08; p.vx *= 0.98;
+      p.alpha -= 0.012;
+      if (p.alpha < 0) p.alpha = 0;
+      fwCtx.save();
+      fwCtx.globalAlpha = p.alpha;
+      fwCtx.fillStyle = p.color;
+      fwCtx.beginPath();
+      fwCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      fwCtx.fill();
+      fwCtx.restore();
+    });
+    fwParticles = fwParticles.filter(function(p) { return p.alpha > 0; });
+    fwFrame = requestAnimationFrame(drawFireworks);
+  }
+
+  function stopFireworks() {
+    fwRunning = false;
+    cancelAnimationFrame(fwFrame);
+    if (fwCanvas) {
+      fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+      fwCanvas.style.display = 'none';
+    }
+  }
+
+  function toggleMusic() {
     if (playing) { music.pause(); musicBtn.textContent = '🎵'; }
     else { music.muted = false; music.play(); musicBtn.textContent = '⏸'; }
     playing = !playing;
