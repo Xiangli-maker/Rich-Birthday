@@ -351,64 +351,7 @@
   });
 </script>
 
-<div class="layout">
-  <div class="sidebar" style="display:none;"></div>
-  <div class="main">
-    <div class="config-banner" id="config-banner" style="display:none">⚠️ <strong>Firebase not configured yet.</strong></div>
-    <div class="form-card">
-      <div class="card-title">Leave a wish for Rich 🥏</div>
-      <div class="field">
-        <label>Your name</label>
-        <input type="text" id="uname" placeholder="">
-      </div>
-      <div class="stars-row" id="stars">
-        <button class="star-btn on" data-i="1">⭐</button>
-        <button class="star-btn on" data-i="2">⭐</button>
-        <button class="star-btn on" data-i="3">⭐</button>
-        <button class="star-btn on" data-i="4">⭐</button>
-        <button class="star-btn on" data-i="5">⭐</button>
-      </div>
-      <div class="field">
-        <label>Your wish / message</label>
-        <textarea id="msg-text" placeholder="Happy birthday! Wishing you all the best..."></textarea>
-      </div>
-      <div class="field">
-        <label>Add photos (optional)</label>
-        <div id="photo-upload-area" onclick="document.getElementById('photo-file').click()" style="border:1px dashed var(--border);border-radius:8px;padding:14px;text-align:center;cursor:pointer;background:var(--cream);transition:border-color 0.2s;">
-          <span id="photo-upload-label" style="font-size:13px;color:var(--text-light);">📷 Click to choose photos (up to 3)</span>
-        </div>
-        <div id="photo-previews" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
-        <input type="file" id="photo-file" accept="image/*" multiple style="display:none;">
-      </div>
-      <button class="submit-btn" id="go-btn">Submit wish 🎉</button>
-      <div class="form-status" id="form-status"></div>
-    </div>
-    <div>
-      <div class="wishes-header">
-        <div class="wishes-title">Wishes & greetings</div>
-        <div class="wishes-count" id="wishes-count"></div>
-      </div>
-      <div class="wish-name-hint">Click a name to read their wish</div>
-      <div id="wishes-list"><div class="loading-state">Loading wishes...</div></div>
-    </div>
-  </div>
-</div>
 
-<!-- Photo Age Quiz Modal -->
-<div id="quiz-overlay">
-  <div id="quiz-box">
-    <button id="quiz-close" onclick="closeQuiz()">✕</button>
-    <img id="quiz-photo" src="" alt="">
-    <div id="quiz-title">How old is Rich here?</div>
-    <div id="quiz-subtitle">Take a guess! 🤔</div>
-    <div id="quiz-input-row">
-      <input type="number" id="quiz-age-input" placeholder="Age" min="0" max="30">
-      <button id="quiz-submit-btn" onclick="checkAge()">Submit</button>
-    </div>
-    <div id="quiz-result"></div>
-  </div>
-</div>
-<canvas id="fireworks-canvas"></canvas>
 
 <!-- Lightbox -->
 <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
