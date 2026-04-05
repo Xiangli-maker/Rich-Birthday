@@ -81,6 +81,109 @@
     @keyframes sway { 0%, 100% { transform: rotate(-4deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-4px); } }
     @keyframes flicker { 0%,100% { opacity:1; transform: scaleY(1); } 50% { opacity:0.7; transform: scaleY(0.85); } }
     @media (max-width: 700px) { .layout { grid-template-columns: 1fr; } }
+
+    /* ── Photo Quiz Modal ── */
+    #quiz-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 20000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    #quiz-overlay.open { display: flex; }
+    #quiz-box {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+    }
+    #quiz-close {
+      position: absolute;
+      top: 12px; right: 18px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+      background: none;
+      border: none;
+    }
+    #quiz-photo {
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+    #quiz-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #2a2118;
+      margin-bottom: 0.5rem;
+    }
+    #quiz-subtitle {
+      font-size: 13px;
+      color: #a89880;
+      margin-bottom: 1rem;
+    }
+    #quiz-input-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    #quiz-age-input {
+      width: 100px;
+      padding: 10px;
+      border: 1.5px solid #e8ddd0;
+      border-radius: 8px;
+      font-size: 18px;
+      text-align: center;
+      font-family: 'Jost', sans-serif;
+      outline: none;
+    }
+    #quiz-age-input:focus { border-color: #a31f34; }
+    #quiz-submit-btn {
+      padding: 10px 20px;
+      background: #a31f34;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: 'Jost', sans-serif;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    #quiz-submit-btn:hover { background: #7a1628; }
+    #quiz-result {
+      font-size: 15px;
+      font-weight: 500;
+      min-height: 24px;
+      margin-bottom: 0.5rem;
+    }
+    #quiz-result.correct { color: #2d8a2d; }
+    #quiz-result.wrong { color: #c0504d; }
+    /* Fireworks canvas */
+    #fireworks-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 25000;
+      display: none;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
   </style>
 </head>
 <body>
@@ -214,7 +317,7 @@
   <div class="gallery-title">📸 Photos</div>
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-width:600px;margin:0 auto;">
     <div style="display:flex;flex-direction:column;gap:8px;">
-      <div onclick="openLightbox('0.JPG','Photo 0')" class="photo-btn">📷 Photo 0</div>
+      <div onclick="openPhotoQuiz('0.JPG', 0)" class="photo-btn">📷 Guess the Age!</div>
       <div onclick="openLightbox('1.JPG','Photo 1')" class="photo-btn">📷 Photo 1</div>
       <div onclick="openLightbox('2.JPG','Photo 2')" class="photo-btn">📷 Photo 2</div>
       <div onclick="openLightbox('3.JPG','Photo 3')" class="photo-btn">📷 Photo 3</div>
@@ -285,6 +388,22 @@
     </div>
   </div>
 </div>
+
+<!-- Photo Age Quiz Modal -->
+<div id="quiz-overlay">
+  <div id="quiz-box">
+    <button id="quiz-close" onclick="closeQuiz()">✕</button>
+    <img id="quiz-photo" src="" alt="">
+    <div id="quiz-title">How old is Rich here?</div>
+    <div id="quiz-subtitle">Take a guess! 🤔</div>
+    <div id="quiz-input-row">
+      <input type="number" id="quiz-age-input" placeholder="Age" min="0" max="30">
+      <button id="quiz-submit-btn" onclick="checkAge()">Submit</button>
+    </div>
+    <div id="quiz-result"></div>
+  </div>
+</div>
+<canvas id="fireworks-canvas"></canvas>
 
 <!-- Lightbox -->
 <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
