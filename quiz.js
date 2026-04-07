@@ -1,8 +1,6 @@
 // Photo Quiz Game
 
 // ─── Debug flag ───────────────────────────────────────────────
-// Set to true to enable the K key shortcut that solves all photos
-// and spawns every balloon instantly.
 var DEBUG = true;
 // ──────────────────────────────────────────────────────────────
 
@@ -17,7 +15,7 @@ var DEBUG = true;
 
   var photos = Object.keys(answers);
 
-  // Seeded PRNG (mulberry32) — change SEED for a different fixed order
+  // Seeded PRNG (mulberry32)
   var SEED = 42;
   function seededRand() {
     SEED |= 0; SEED = SEED + 0x6D2B79F5 | 0;
@@ -73,13 +71,13 @@ var DEBUG = true;
   function submitGuess() {
     var guess = parseInt(document.getElementById('qinput').value);
     var res = document.getElementById('qresult');
-    
+
     if (isNaN(guess)) {
       res.style.color = '#c0504d';
       res.textContent = 'Please enter a number!';
       return;
     }
-    
+
     // Find answer case-insensitive
     var answer;
     Object.keys(answers).forEach(function(k) {
@@ -87,16 +85,20 @@ var DEBUG = true;
         answer = answers[k];
       }
     });
-    
+
     if (answer === undefined) {
       res.style.color = '#c0504d';
       res.textContent = 'Photo not found!';
       return;
     }
-    
+
     if (guess === answer) {
       res.style.color = '#2d8a2d';
       res.textContent = '🎉 Yes! Rich was ' + answer + ' years old!';
+
+      // Add to timeline
+      if (typeof addToTimeline === 'function') addToTimeline(current, answer);
+
       // Mark the grid button as solved
       var solvedBtn = btnMap[current];
       if (solvedBtn) {
@@ -109,6 +111,7 @@ var DEBUG = true;
         solvedBtn.innerHTML = '✔';
       }
       if (typeof window.spawnAgeBalloon === 'function') window.spawnAgeBalloon(answer);
+
       // Check if all photos are now solved
       var solvedCount = Object.keys(btnMap).filter(function(f) {
         return btnMap[f].style.pointerEvents === 'none';
@@ -147,24 +150,24 @@ var DEBUG = true;
     e.stopPropagation();
     submitGuess();
   });
-  
+
   document.getElementById('qclose').addEventListener('click', function(e) {
     e.stopPropagation();
     closeQuiz();
   });
-  
+
   document.getElementById('qinput').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
       e.stopPropagation();
       submitGuess();
     }
   });
-  
+
   document.getElementById('qoverlay').addEventListener('click', function(e) {
     if (e.target === this) closeQuiz();
   });
 
-  // Fireworks for quiz
+  // Fireworks for completing all photos
   function launchQuizFireworks() {
     var canvas = document.getElementById('fwcanvas');
     var ctx = canvas.getContext('2d');
@@ -173,22 +176,20 @@ var DEBUG = true;
     canvas.style.display = 'block';
     fwPieces = [];
     fwRunning = true;
-    
+
     var colors = ['#a31f34', '#FFD700', '#fff', '#2d6a2d', '#c8c9c7', '#ff6600'];
-    
+
     for (var b = 0; b < 20; b++) {
       (function(delay) {
         setTimeout(function() {
           if (!fwRunning) return;
           var x = Math.random() * canvas.width;
           var y = Math.random() * canvas.height * 0.6 + 50;
-
           for (var i = 0; i < 80; i++) {
             var angle = (Math.PI * 2 / 80) * i;
             var speed = Math.random() * 7 + 2;
             fwPieces.push({
-              x: x,
-              y: y,
+              x: x, y: y,
               vx: Math.cos(angle) * speed,
               vy: Math.sin(angle) * speed,
               alpha: 1,
@@ -207,15 +208,11 @@ var DEBUG = true;
   function drawQuizFireworks(ctx, canvas) {
     if (!fwRunning) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
     fwPieces.forEach(function(p) {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.08;
-      p.vx *= 0.98;
+      p.x += p.vx; p.y += p.vy;
+      p.vy += 0.08; p.vx *= 0.98;
       p.alpha -= 0.012;
       if (p.alpha < 0) p.alpha = 0;
-      
       ctx.save();
       ctx.globalAlpha = p.alpha;
       ctx.fillStyle = p.color;
@@ -224,14 +221,8 @@ var DEBUG = true;
       ctx.fill();
       ctx.restore();
     });
-    
-    fwPieces = fwPieces.filter(function(p) {
-      return p.alpha > 0;
-    });
-    
-    fwFrame = requestAnimationFrame(function() {
-      drawQuizFireworks(ctx, canvas);
-    });
+    fwPieces = fwPieces.filter(function(p) { return p.alpha > 0; });
+    fwFrame = requestAnimationFrame(function() { drawQuizFireworks(ctx, canvas); });
   }
 
   function stopFireworks() {
@@ -242,14 +233,13 @@ var DEBUG = true;
     canvas.style.display = 'none';
   }
 
-  // Debug: press K to instantly solve all remaining photos and spawn balloons
+  // Debug: press K to instantly solve all
   document.addEventListener('keydown', function(e) {
     if (!DEBUG) return;
     if (e.key !== 'k' && e.key !== 'K') return;
     Object.keys(btnMap).forEach(function(file) {
       var btn = btnMap[file];
-      if (btn.style.pointerEvents === 'none') return; // already solved
-      // Mark as solved
+      if (btn.style.pointerEvents === 'none') return;
       btn.classList.add('solved');
       btn.style.background = 'rgba(45,138,45,0.35)';
       btn.style.border = '2px solid #2d8a2d';
@@ -257,13 +247,13 @@ var DEBUG = true;
       btn.style.pointerEvents = 'none';
       btn.style.cursor = 'default';
       btn.innerHTML = '✔';
-      // Spawn the balloon for this photo's age
       var age;
       Object.keys(answers).forEach(function(k) {
         if (k.toLowerCase() === file.toLowerCase()) age = answers[k];
       });
-      if (age !== undefined && typeof window.spawnAgeBalloon === 'function') {
-        window.spawnAgeBalloon(age);
+      if (age !== undefined) {
+        if (typeof window.spawnAgeBalloon === 'function') window.spawnAgeBalloon(age);
+        if (typeof addToTimeline === 'function') addToTimeline(file, age);
       }
     });
     launchQuizFireworks();
