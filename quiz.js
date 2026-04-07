@@ -38,24 +38,8 @@ var DEBUG = true;
     '20.jpg': '🌟 Youngest Top 10'
   };
 
-  var photos = Object.keys(answers);
-
-  // Seeded PRNG (mulberry32)
-  var SEED = 42;
-  function seededRand() {
-    SEED |= 0; SEED = SEED + 0x6D2B79F5 | 0;
-    var t = Math.imul(SEED ^ SEED >>> 15, 1 | SEED);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  }
-
-  // Shuffle
-  for (var i = photos.length - 1; i > 0; i--) {
-    var j = Math.floor(seededRand() * (i + 1));
-    var t = photos[i];
-    photos[i] = photos[j];
-    photos[j] = t;
-  }
+  // Fixed display order by age
+  var photos = ['2.JPG', '14.jpg', '0.JPG', '7.JPG', '17.jpg', '19.jpg', '1.JPG', '10.JPG', '6.JPG', '13.JPG', '18.jpg', '3.JPG', '9.JPG', '11.JPG', '15.jpg', '4.JPG', '5.JPG', '20.jpg', '16.jpg', '8.jpg', '12.JPG'];
 
   // Build grid
   var grid = document.getElementById('quiz-grid');
