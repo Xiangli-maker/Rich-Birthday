@@ -64,7 +64,7 @@ var DEBUG = true;
     var btn = document.createElement('div');
     btn.className = 'photo-btn';
     btn.style.textAlign = 'center';
-    btn.textContent = '📷 ' + (fileCaptions[file] || 'Photo ' + (idx + 1));
+    btn.textContent = fileCaptions[file] || '📷 Photo ' + (idx + 1);
     btn.addEventListener('click', function() {
       openQuiz(file);
     });
