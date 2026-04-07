@@ -28,7 +28,7 @@ var DEBUG = true;
     '10.JPG': '🐎 马到成功',
     '11.JPG': '😏 I am so cool',
     '12.JPG': '🎾 ACE',
-    '13.JPG': '😂 That's Funny',
+    '13.JPG': "😂 That's Funny",
     '14.jpg': '🤠 YEEEE-HAW!',
     '15.jpg': '🏎️ Go Cart',
     '16.jpg': '🏀 Best Dribbler',
