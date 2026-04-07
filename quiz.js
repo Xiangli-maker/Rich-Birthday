@@ -15,27 +15,27 @@ var DEBUG = true;
 
   // Captions tied to each photo file
   var fileCaptions = {
-    '0.JPG':  '📷 Basketball',
-    '1.JPG':  '📷 Countdown',
-    '2.JPG':  '📷 100',
-    '3.JPG':  '📷 Got Skills',
-    '4.JPG':  '📷 Rich',
-    '5.JPG':  '📷 Confident',
-    '6.JPG':  '📷 Curious at Technology',
-    '7.JPG':  '📷 Going to Win',
-    '8.jpg':  '📷 Fastest Swim Team',
-    '9.JPG':  '📷 Beat AC',
-    '10.JPG': '📷 马到成功',
-    '11.JPG': '📷 I am so cool',
-    '12.JPG': '📷 ACE',
-    '13.JPG': "📷 That's Funny",
-    '14.jpg': '📷 YEEEE-HAW!',
-    '15.jpg': '📷 Go Cart',
-    '16.jpg': '📷 Best Dribbler',
-    '17.jpg': '📷 M Team',
-    '18.jpg': '📷 Mop the Floor',
-    '19.jpg': '📷 Champ',
-    '20.jpg': '📷 Youngest Top 10'
+    '0.JPG':  '🏀 Basketball',
+    '1.JPG':  '⏳ Countdown',
+    '2.JPG':  '💯 100',
+    '3.JPG':  '🎯 Got Skills',
+    '4.JPG':  '😎 Rich',
+    '5.JPG':  '💪 Confident',
+    '6.JPG':  '🤖 Curious at Technology',
+    '7.JPG':  '🏆 Going to Win',
+    '8.jpg':  '🏊 Fastest Swim Team',
+    '9.JPG':  '⚡ Beat AC',
+    '10.JPG': '🐎 马到成功',
+    '11.JPG': '😏 I am so cool',
+    '12.JPG': '🎾 ACE',
+    '13.JPG': '😂 That's Funny',
+    '14.jpg': '🤠 YEEEE-HAW!',
+    '15.jpg': '🏎️ Go Cart',
+    '16.jpg': '🏀 Best Dribbler',
+    '17.jpg': '🎽 M Team',
+    '18.jpg': '🧹 Mop the Floor',
+    '19.jpg': '🥇 Champ',
+    '20.jpg': '🌟 Youngest Top 10'
   };
 
   var photos = Object.keys(answers);
